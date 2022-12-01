@@ -1,24 +1,24 @@
 <?php
 
 use Jdlcgarcia\Aoc2022\common\FileHandler;
+use Jdlcgarcia\Aoc2022\entities\Elf;
+use Jdlcgarcia\Aoc2022\entities\ElfExpedition;
 
 require_once 'vendor/autoload.php';
 
 $fileHandler = new FileHandler();
 $file = $fileHandler->loadFileContent('01.txt');
 
-$max = 0;
-$caloriesCounter = 0;
+$expedition = new ElfExpedition();
+$elf = new Elf();
 while (!$file->eof()) {
-    if ($file->current() === PHP_EOL) {
-        if ($max <= $caloriesCounter) {
-            $max = $caloriesCounter;
-        }
-        $caloriesCounter = 0;
+    if ($file->current() !== PHP_EOL) {
+        $elf->addCalories((int)$file->current());
     } else {
-        $caloriesCounter += (int)$file->current();
+        $expedition->addElf($elf);
+        $elf = new Elf();
     }
     $file->next();
 }
 
-echo $max;
+echo $expedition->getElfWithMaxCalories()->getCalories();
