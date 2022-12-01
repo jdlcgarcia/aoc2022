@@ -5,16 +5,16 @@ namespace Jdlcgarcia\Aoc2022\common;
 class FileHandler
 {
     private const PATH = 'input/';
-    private string $content;
+    private array $content;
 
-    public function getContent(): string
+    public function getContent(): array
     {
         return $this->content;
     }
 
-    public function loadFileContent(string $filename): string
+    public function loadFileContent(string $filename): array
     {
-        $this->content = file_get_contents(self::PATH . $filename, FILE_USE_INCLUDE_PATH);
+        $this->content = file(self::PATH . $filename);
 
         return $this->getContent();
     }
