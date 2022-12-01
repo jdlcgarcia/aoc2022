@@ -20,5 +20,7 @@ while (!$file->eof()) {
     }
     $file->next();
 }
+$expedition->addElf($elf);
 
-echo $expedition->getElfWithMaxCalories()->getCalories();
+echo $expedition->getElfWithMostCalories()->getCalories() . PHP_EOL;
+echo $expedition->getCaloriesCarriedByTopThreeElves() . PHP_EOL;
