@@ -1,0 +1,19 @@
+{
+    "name": "jdlcgarcia/aoc2022",
+    "description": "Advent of Code for 2022",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Jdlcgarcia\\Aoc2022\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Juan Garcia",
+            "email": "jcruzgar@gmail.com"
+        }
+    ],
+    "require-dev": {
+
+    }
+}
