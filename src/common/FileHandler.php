@@ -2,20 +2,17 @@
 
 namespace Jdlcgarcia\Aoc2022\common;
 
+use SplFileObject;
+
 class FileHandler
 {
     private const PATH = 'input/';
-    private array $content;
+    private SplFileObject $file;
 
-    public function getContent(): array
+    public function loadFileContent(string $filename): SplFileObject
     {
-        return $this->content;
-    }
+        $this->file = new SplFileObject(self::PATH . $filename,"r");
 
-    public function loadFileContent(string $filename): array
-    {
-        $this->content = file(self::PATH . $filename);
-
-        return $this->getContent();
+        return $this->file;
     }
 }
