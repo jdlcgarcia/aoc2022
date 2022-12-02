@@ -25,23 +25,13 @@ class RockPaperScissorsGame
     private const SCORE_OUTCOME_DRAW = 3;
     private const SCORE_OUTCOME_WIN = 6;
 
-    private int $score = 0;
+    private int $scoreA = 0;
+    private int $scoreB = 0;
 
-    public function addGame(string $attack, string $response): int
+    public function addGame(string $attack, string $response): void
     {
-        $gameScore = self::SCORES[$response];
-
-        if ($this->victory($attack, $response)) {
-            $gameScore += self::SCORE_OUTCOME_WIN;
-        } elseif ($this->defeat($attack, $response)) {
-            $gameScore += self::SCORE_OUTCOME_LOSE;
-        } else {
-            $gameScore += self::SCORE_OUTCOME_DRAW;
-        }
-
-        $this->score += $gameScore;
-
-        return $gameScore;
+        $this->calculateScoreA($attack, $response, self::SCORES[$response]);
+        $this->calculateScoreB($attack, $response, self::SCORES[$response]);
     }
 
     private function victory(string $attack, string $response): bool
@@ -65,8 +55,29 @@ class RockPaperScissorsGame
     /**
      * @return int
      */
-    public function getScore(): int
+    public function getScoreA(): int
     {
-        return $this->score;
+        return $this->scoreA;
+    }
+
+    /**
+     * @param string $attack
+     * @param string $response
+     * @param int $baseScore
+     */
+    public function calculateScoreA(string $attack, string $response, int $baseScore): void
+    {
+        if ($this->victory($attack, $response)) {
+            $this->scoreA += $baseScore + self::SCORE_OUTCOME_WIN;
+        } elseif ($this->defeat($attack, $response)) {
+            $this->scoreA += $baseScore + self::SCORE_OUTCOME_LOSE;
+        } else {
+            $this->scoreA += $baseScore + self::SCORE_OUTCOME_DRAW;
+        }
+    }
+
+    private function calculateScoreB(string $attack, string $response, int $response1): void
+    {
+
     }
 }

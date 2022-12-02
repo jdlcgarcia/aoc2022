@@ -11,10 +11,10 @@ $game = new RockPaperScissorsGame();
 while (!$file->eof()) {
     if (trim($file->current()) !== '') {
         $plays = explode(' ', trim($file->current()));
-        $result = $game->addGame($plays[0], $plays[1]);
+        $game->addGame($plays[0], $plays[1]);
     }
 
     $file->next();
 }
 
-echo $game->getScore() . PHP_EOL;
+echo $game->getScoreA() . PHP_EOL;
