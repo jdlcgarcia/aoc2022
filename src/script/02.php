@@ -6,11 +6,14 @@ use Jdlcgarcia\Aoc2022\entities\RockPaperScissorsGame;
 require_once 'vendor/autoload.php';
 
 $fileHandler = new FileHandler();
-$file = $fileHandler->loadFileContent('test.txt');
+$file = $fileHandler->loadFileContent('02.txt');
 $game = new RockPaperScissorsGame();
 while (!$file->eof()) {
-    $plays = explode(' ', trim($file->current()));
-    $result = $game->addGame($plays[0], $plays[1]);
+    if (trim($file->current()) !== '') {
+        $plays = explode(' ', trim($file->current()));
+        $result = $game->addGame($plays[0], $plays[1]);
+    }
+
     $file->next();
 }
 
