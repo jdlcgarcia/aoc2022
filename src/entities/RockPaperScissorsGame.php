@@ -12,6 +12,10 @@ class RockPaperScissorsGame
     private const RESPONSE_PAPER = 'Y';
     private const RESPONSE_SCISSORS = 'Z';
 
+    private const ROUND_END_LOSE = 'X';
+    private const ROUND_END_DRAW = 'Y';
+    private const ROUND_END_WIN = 'Z';
+
     private const SCORES = [
         self::ROCK => 1,
         self::PAPER => 2,
@@ -31,7 +35,7 @@ class RockPaperScissorsGame
     public function addGame(string $attack, string $response): void
     {
         $this->calculateScoreA($attack, $response, self::SCORES[$response]);
-        $this->calculateScoreB($attack, $response, self::SCORES[$response]);
+        $this->calculateScoreB($attack, $response);
     }
 
     private function victory(string $attack, string $response): bool
@@ -76,8 +80,38 @@ class RockPaperScissorsGame
         }
     }
 
-    private function calculateScoreB(string $attack, string $response, int $response1): void
+    private function calculateScoreB(string $attack, string $result): void
     {
+        $this->scoreB += match ($result) {
+            self::ROUND_END_LOSE => self::SCORE_OUTCOME_LOSE + self::SCORES[$this->findLoser($attack)],
+            self::ROUND_END_DRAW => self::SCORE_OUTCOME_DRAW + self::SCORES[$attack],
+            self::ROUND_END_WIN => self::SCORE_OUTCOME_WIN + self::SCORES[$this->findWinner($attack)],
+        };
+    }
 
+    private function findLoser(string $attack): string
+    {
+        return match ($attack) {
+            self::ROCK => self::SCISSORS,
+            self::PAPER => self::ROCK,
+            self::SCISSORS => self::PAPER
+        };
+    }
+
+    private function findWinner(string $attack): string
+    {
+        return match ($attack) {
+            self::SCISSORS => self::ROCK,
+            self::ROCK => self::PAPER,
+            self::PAPER => self::SCISSORS,
+        };
+    }
+
+    /**
+     * @return int
+     */
+    public function getScoreB(): int
+    {
+        return $this->scoreB;
     }
 }

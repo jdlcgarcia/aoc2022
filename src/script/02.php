@@ -6,7 +6,7 @@ use Jdlcgarcia\Aoc2022\entities\RockPaperScissorsGame;
 require_once 'vendor/autoload.php';
 
 $fileHandler = new FileHandler();
-$file = $fileHandler->loadFileContent('02.txt');
+$file = $fileHandler->loadFileContent('test.txt');
 $game = new RockPaperScissorsGame();
 while (!$file->eof()) {
     if (trim($file->current()) !== '') {
@@ -18,3 +18,4 @@ while (!$file->eof()) {
 }
 
 echo $game->getScoreA() . PHP_EOL;
+echo $game->getScoreB() . PHP_EOL;
