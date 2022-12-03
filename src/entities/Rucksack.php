@@ -60,4 +60,9 @@ class Rucksack
                 self::ASCII_OFFSET_LOWERCASE
             );
     }
+
+    public function getContent(): array
+    {
+        return str_split($this->firstCompartment . $this->secondCompartment);
+    }
 }
