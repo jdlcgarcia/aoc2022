@@ -1,22 +1,35 @@
 <?php
 
 use Jdlcgarcia\Aoc2022\common\FileHandler;
+use Jdlcgarcia\Aoc2022\entities\GroupOfRucksacks;
 use Jdlcgarcia\Aoc2022\entities\Rucksack;
 
 require_once 'vendor/autoload.php';
 
 $fileHandler = new FileHandler();
-$file = $fileHandler->loadFileContent('03.txt');
+$file = $fileHandler->loadFileContent('test.txt');
 
-$priorities = 0;
+$priority = 0;
+$badgeItemPriority = 0;
+$group = new GroupOfRucksacks();
 while (!$file->eof()) {
     if (trim($file->current()) !== '') {
         $rucksack = new Rucksack();
         $rucksack->fill(trim($file->current()));
-        $priorities += $rucksack->getRepeatedPriority();
+        $priority += $rucksack->getRepeatedPriority();
+
+        if (!$group->isFull()) {
+            $group->addRuckSack($rucksack);
+        }
+
+        if ($group->isFull()) {
+            $badgeItemPriority += $group->getPriorityOfBadgeItems();
+            $group = new GroupOfRucksacks();
+        }
     }
 
     $file->next();
 }
 
-echo $priorities . PHP_EOL;
+echo $priority . PHP_EOL;
+echo $badgeItemPriority . PHP_EOL;
