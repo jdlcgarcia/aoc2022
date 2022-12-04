@@ -6,7 +6,7 @@ use Jdlcgarcia\Aoc2022\entities\CleanupAssignment;
 require_once 'vendor/autoload.php';
 
 $fileHandler = new FileHandler();
-$file = $fileHandler->loadFileContent('test.txt');
+$file = $fileHandler->loadFileContent('04.txt');
 $countOverlaps = 0;
 while (!$file->eof()) {
     if (trim($file->current()) !== '') {
