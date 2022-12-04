@@ -17,7 +17,7 @@ class CleanupAssignment
         }
     }
 
-    public function findOverlap(): bool
+    public function findCompleteOverlap(): bool
     {
         return !empty(str_contains($this->firstAssignment, $this->secondAssignment))
             || !empty(str_contains($this->secondAssignment, $this->firstAssignment));
