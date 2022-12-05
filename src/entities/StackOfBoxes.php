@@ -20,4 +20,9 @@ class StackOfBoxes
 
         return $drawing;
     }
+
+    public function popBox(): string
+    {
+        return array_pop($this->boxes);
+    }
 }

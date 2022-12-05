@@ -4,7 +4,7 @@ namespace Jdlcgarcia\Aoc2022\entities;
 
 class Storage
 {
-    /** @var array StackOfBoxes[] */
+    /** @var StackOfBoxes[] */
     private array $stacks = [];
 
     public function addStack(int $place, StackOfBoxes $stack): void
@@ -29,5 +29,22 @@ class Storage
         }
 
         $this->addStack($place, $stackOfBoxes);
+    }
+
+    public function executeMove(int $numberOfBoxes, int $origin, int $end): void
+    {
+        for($i=1; $i <= $numberOfBoxes; $i++) {
+            $this->stacks[$end]->pushBox($this->stacks[$origin]->popBox());
+        }
+    }
+
+    public function getTops(): string
+    {
+        $tops = '';
+        foreach ($this->stacks as $stack) {
+            $tops .= $stack->popBox();
+        }
+
+        return $tops;
     }
 }
