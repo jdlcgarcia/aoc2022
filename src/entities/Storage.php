@@ -31,11 +31,17 @@ class Storage
         $this->addStack($place, $stackOfBoxes);
     }
 
-    public function executeMove(int $numberOfBoxes, int $origin, int $end): void
+    public function executeMove9000(int $numberOfBoxes, int $origin, int $end): void
     {
         for($i=1; $i <= $numberOfBoxes; $i++) {
             $this->stacks[$end]->pushBox($this->stacks[$origin]->popBox());
         }
+    }
+
+    public function executeMove9001(int $numberOfBoxes, int $origin, int $end): void
+    {
+        $boxes = $this->stacks[$origin]->multipopBoxes($numberOfBoxes);
+        $this->stacks[$end]->multipushBoxes($boxes);
     }
 
     public function getTops(): string

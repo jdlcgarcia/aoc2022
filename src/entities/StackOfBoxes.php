@@ -21,8 +21,18 @@ class StackOfBoxes
         return $drawing;
     }
 
-    public function popBox(): string
+    public function popBox(): ?string
     {
         return array_pop($this->boxes);
+    }
+
+    public function multipopBoxes(int $numberOfBoxes): array
+    {
+        return array_splice($this->boxes, -1 * $numberOfBoxes);
+    }
+
+    public function multipushBoxes(array $boxes)
+    {
+        $this->boxes = array_merge($this->boxes, $boxes);
     }
 }
