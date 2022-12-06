@@ -5,7 +5,7 @@ namespace Jdlcgarcia\Aoc2022\entities;
 class CommDevice
 {
     private string $dataStream;
-    private int $startOfPacketMarker;
+    private int $startOfPacketMarker = -1;
 
     public function __construct(string $dataStream)
     {
@@ -14,20 +14,17 @@ class CommDevice
 
     public function findStartOfPacketMarker(): int
     {
-        for ($i = 3; $i < strlen($this->dataStream); $i++) {
-            if (sizeof(array_unique([
-                    $this->dataStream[$i],
-                    $this->dataStream[$i - 1],
-                    $this->dataStream[$i - 2],
-                    $this->dataStream[$i - 3],
-                ])) === 4) {
-                $this->startOfPacketMarker = $i+1;
-
-                return $this->startOfPacketMarker;
+        $positionToCheck = 0;
+        while($this->startOfPacketMarker === -1) {
+            $markerToCheck = str_split(substr($this->dataStream, $positionToCheck, 4));
+            if (sizeof(array_unique($markerToCheck)) === 4) {
+                $this->startOfPacketMarker = $positionToCheck + 4;
             }
+
+            $positionToCheck++;
         }
 
-        return -1;
+        return $this->startOfPacketMarker;
     }
 
     /**
