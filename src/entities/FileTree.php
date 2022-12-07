@@ -46,17 +46,26 @@ class FileTree
         } elseif ($directory === '..') {
             $this->currentDirectory = $this->currentDirectory->getParent();
         } else {
-            $directoryToChange->setParent($this->currentDirectory);
-            $this->currentDirectory->addDirectory($directoryToChange);
+            if (is_null($this->currentDirectory->getDirectory($directory))) {
+                $this->createDirectory($directoryToChange);
+            }
             $this->currentDirectory = $this->currentDirectory->getDirectory($directory);
         }
-
-         echo "I'm in directory ".$this->currentDirectory->getPath() . PHP_EOL;
     }
 
     private function listDirectory(): void
     {
         echo "Listing directory ".$this->currentDirectory->getPath() . PHP_EOL;
+    }
+
+    /**
+     * @param Directory $directoryToChange
+     * @return void
+     */
+    public function createDirectory(Directory $directoryToChange): void
+    {
+        $directoryToChange->setParent($this->currentDirectory);
+        $this->currentDirectory->addDirectory($directoryToChange);
     }
 
 

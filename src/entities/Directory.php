@@ -51,8 +51,12 @@ class Directory
         return $this->subdirectories;
     }
 
-    public function getDirectory(string $directory)
+    public function getDirectory(string $directory): ?Directory
     {
+        if (!isset($this->subdirectories[$directory])) {
+            return null;
+        }
+
         return $this->subdirectories[$directory];
     }
 
