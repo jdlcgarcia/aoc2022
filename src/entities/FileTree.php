@@ -6,10 +6,13 @@ use SplFileObject;
 
 class FileTree
 {
+    const TOTAL_DISK_SPACE = 70000000;
+    const UPDATE_DISK_SPACE = 30000000;
     private Directory $root;
     private SplFileObject $listOfCommands;
     private Directory $currentDirectory;
     private const SMALL_FOLDER_THRESHOLD = 100000;
+    private Directory $selectedToDelete;
 
     function __construct(SplFileObject $listOfCommands)
     {
@@ -130,6 +133,42 @@ class FileTree
         }
 
         return $sizeToClean;
+    }
+
+    public function availableMemory(): int
+    {
+        return self::TOTAL_DISK_SPACE - $this->getRoot()->getSize();
+    }
+
+    public function findSmallestBigDirectoryWhichWouldFitTheUpdate(): int
+    {
+        if ($this->remainingSpaceWouldBeEnoughForTheUpdate($this->getRoot())) {
+            $this->selectedToDelete = $this->getRoot();
+        }
+
+        $this->findSmallestBigSubDirectoryWhichWouldFitTheUpdate($this->getRoot());
+
+        return $this->selectedToDelete->getSize();
+    }
+
+    private function findSmallestBigSubDirectoryWhichWouldFitTheUpdate(Directory $parent): void
+    {
+        foreach($parent->getSubdirectories() as $directory) {
+            if ($this->remainingSpaceWouldBeEnoughForTheUpdate($directory) && $directory->getSize() < $this->selectedToDelete->getSize()) {
+                $this->selectedToDelete = $directory;
+            }
+
+            $this->findSmallestBigSubDirectoryWhichWouldFitTheUpdate($directory);
+        }
+    }
+
+    /**
+     * @param Directory $directory
+     * @return bool
+     */
+    public function remainingSpaceWouldBeEnoughForTheUpdate(Directory $directory): bool
+    {
+        return $this->availableMemory() + $directory->getSize() > self::UPDATE_DISK_SPACE;
     }
 
 }

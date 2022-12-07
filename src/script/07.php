@@ -12,3 +12,4 @@ $fileTree = new FileTree($file);
 $fileTree->run();
 
 echo $fileTree->detectSmallDirectories() . PHP_EOL;
+echo $fileTree->findSmallestBigDirectoryWhichWouldFitTheUpdate() . PHP_EOL;
