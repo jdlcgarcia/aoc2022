@@ -28,7 +28,7 @@ class FileTree
 
     public function readCommand(string $command): void
     {
-        if (str_starts_with($command, '$')) {
+        if ($this->detectAction($command)) {
             [$action, $directory] = sscanf($command, '$ %s %s');
             match ($action) {
                 'cd' => $this->changeDirectory($directory),
@@ -46,27 +46,70 @@ class FileTree
         } elseif ($directory === '..') {
             $this->currentDirectory = $this->currentDirectory->getParent();
         } else {
-            if (is_null($this->currentDirectory->getDirectory($directory))) {
-                $this->createDirectory($directoryToChange);
-            }
+            $this->createDirectory($directoryToChange);
             $this->currentDirectory = $this->currentDirectory->getDirectory($directory);
         }
     }
 
     private function listDirectory(): void
     {
-        echo "Listing directory ".$this->currentDirectory->getPath() . PHP_EOL;
+        $this->listOfCommands->next();
+
+        while (!$this->detectAction($this->listOfCommands->current()) && !$this->listOfCommands->eof()) {
+            if (trim($this->listOfCommands->current()) !== '') {
+                [$info, $name] = sscanf(trim($this->listOfCommands->current()), '%s %s');
+                match ($info) {
+                    'dir' => $this->createDirectory(new Directory($name)),
+                    default => $this->createFile(new File($name, (int)$info))
+                };
+            }
+
+            $this->listOfCommands->next();
+        }
+
+        $this->stepBack();
     }
 
     /**
-     * @param Directory $directoryToChange
+     * @param Directory $directory
      * @return void
      */
-    public function createDirectory(Directory $directoryToChange): void
+    public function createDirectory(Directory $directory): void
     {
-        $directoryToChange->setParent($this->currentDirectory);
-        $this->currentDirectory->addDirectory($directoryToChange);
+        if (is_null($this->currentDirectory->getDirectory($directory->getName()))) {
+            $directory->setParent($this->currentDirectory);
+            $this->currentDirectory->addDirectory($directory);
+        }
     }
 
+    private function createFile(File $file)
+    {
+        if (is_null($this->currentDirectory->getFile($file->getName()))) {
+            $this->currentDirectory->addFile($file);
+            $this->currentDirectory->increaseSize($file->getSize());
+        }
+    }
+
+    /**
+     * @param string $command
+     * @return bool
+     */
+    public function detectAction(string $command): bool
+    {
+        return str_starts_with($command, '$');
+    }
+
+    private function stepBack()
+    {
+        $this->listOfCommands->seek($this->listOfCommands->key() - 1);
+    }
+
+    /**
+     * @return Directory
+     */
+    public function getRoot(): Directory
+    {
+        return $this->root;
+    }
 
 }

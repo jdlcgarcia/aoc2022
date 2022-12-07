@@ -4,7 +4,7 @@ namespace Jdlcgarcia\Aoc2022\entities;
 
 class Directory
 {
-    private int $size;
+    private int $size = 0;
     private string $name;
     private ?Directory $parent = null;
 
@@ -79,8 +79,31 @@ class Directory
         $this->subdirectories[$directory->getName()] = $directory;
     }
 
-    public function getParent(): Directory
+    public function getParent(): ?Directory
     {
         return $this->parent;
+    }
+
+    public function getFile(string $filename): ?File
+    {
+        if (!isset($this->files[$filename])) {
+            return null;
+        }
+
+        return $this->files[$filename];
+    }
+
+    public function addFile(File $file)
+    {
+        $this->files[$file->getName()] = $file;
+    }
+
+    public function increaseSize(int $childSize): void
+    {
+        $this->size += $childSize;
+
+        if (!is_null($this->parent)) {
+            $this->parent->increaseSize($childSize);
+        }
     }
 }
