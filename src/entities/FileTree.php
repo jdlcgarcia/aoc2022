@@ -9,6 +9,7 @@ class FileTree
     private Directory $root;
     private SplFileObject $listOfCommands;
     private Directory $currentDirectory;
+    private const SMALL_FOLDER_THRESHOLD = 100000;
 
     function __construct(SplFileObject $listOfCommands)
     {
@@ -110,6 +111,25 @@ class FileTree
     public function getRoot(): Directory
     {
         return $this->root;
+    }
+
+    public function detectSmallDirectories(): int
+    {
+        return $this->findSmallSubdirectories($this->getRoot());
+    }
+
+    private function findSmallSubdirectories(Directory $parent): int
+    {
+        $sizeToClean = 0;
+        foreach($parent->getSubdirectories() as $directory) {
+            if ($directory->getSize() < self::SMALL_FOLDER_THRESHOLD) {
+                $sizeToClean += $directory->getSize();
+            }
+
+            $sizeToClean += $this->findSmallSubdirectories($directory);
+        }
+
+        return $sizeToClean;
     }
 
 }
