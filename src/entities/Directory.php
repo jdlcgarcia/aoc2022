@@ -106,4 +106,18 @@ class Directory
             $this->parent->increaseSize($childSize);
         }
     }
+
+    public function print(int $tab = 0)
+    {
+        $prefix = str_repeat('   ', $tab);
+        echo $prefix . '- ' .$this->getName() . ' (dir)' . PHP_EOL;
+
+        foreach($this->subdirectories as $directory) {
+            $directory->print($tab+1);
+        }
+
+        foreach($this->files as $file) {
+            $file->print($tab+1);
+        }
+    }
 }

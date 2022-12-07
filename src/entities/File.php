@@ -34,5 +34,11 @@ class File
         return $this->name;
     }
 
+    public function print(int $tab = 0)
+    {
+        $prefix = str_repeat('   ', $tab);
+        echo $prefix . '- ' .$this->getName() . ' (file, size='.$this->getSize().')' . PHP_EOL;
+    }
+
 
 }
