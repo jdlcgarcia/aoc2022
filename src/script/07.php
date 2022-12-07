@@ -6,7 +6,7 @@ use Jdlcgarcia\Aoc2022\common\FileHandler;
 use Jdlcgarcia\Aoc2022\entities\FileTree;
 
 $fileHandler = new FileHandler();
-$file = $fileHandler->loadFileContent('test.txt');
+$file = $fileHandler->loadFileContent('07.txt');
 
 $fileTree = new FileTree($file);
 $fileTree->run();
