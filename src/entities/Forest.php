@@ -6,7 +6,7 @@ class Forest
 {
     /** @var Tree[][] */
     private array $trees;
-    private const SIZE = 99;
+    private const SIZE = 5;
 
     public function loadRow(string $trim): void
     {
@@ -53,9 +53,11 @@ class Forest
     private function isVisibleFromAnyDirection(int $x, int $y): bool
     {
         $checks = 0;
+        $partialScenicScores = [0, 0, 0, 0];
 
         $checks++;
-        for ($i = 0; $i < $x; $i++) {
+        for ($i = $x-1; $i >= 0; $i--) {
+            $partialScenicScores[0]++;
             if ($this->trees[$i][$y]->getHeight() >= $this->trees[$x][$y]->getHeight()) {
                 $checks--;
                 break;
@@ -64,6 +66,7 @@ class Forest
 
         $checks++;
         for ($i = $x+1; $i < self::SIZE; $i++) {
+            $partialScenicScores[1]++;
             if ($this->trees[$i][$y]->getHeight() >= $this->trees[$x][$y]->getHeight()) {
                 $checks--;
                 break;
@@ -71,7 +74,8 @@ class Forest
         }
 
         $checks++;
-        for ($j = 0; $j < $y; $j++) {
+        for ($j = $y-1; $j >= 0; $j--) {
+            $partialScenicScores[2]++;
             if ($this->trees[$x][$j]->getHeight() >= $this->trees[$x][$y]->getHeight()) {
                 $checks--;
                 break;
@@ -80,11 +84,13 @@ class Forest
 
         $checks++;
         for ($j = $y+1; $j < self::SIZE; $j++) {
+            $partialScenicScores[3]++;
             if ($this->trees[$x][$j]->getHeight() >= $this->trees[$x][$y]->getHeight()) {
                 $checks--;
                 break;
             }
         }
+        $this->trees[$x][$y]->setScenicScore($partialScenicScores[0] * $partialScenicScores[1] * $partialScenicScores[2] * $partialScenicScores[3]);
 
         return $checks > 0;
     }
