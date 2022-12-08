@@ -7,6 +7,7 @@ class Forest
     /** @var Tree[][] */
     private array $trees;
     private const SIZE = 5;
+    private int $maxScenicScore = 0;
 
     public function loadRow(string $trim): void
     {
@@ -91,8 +92,16 @@ class Forest
             }
         }
         $this->trees[$x][$y]->setScenicScore($partialScenicScores[0] * $partialScenicScores[1] * $partialScenicScores[2] * $partialScenicScores[3]);
+        if ($this->trees[$x][$y]->getScenicScore() > $this->maxScenicScore) {
+            $this->maxScenicScore = $this->trees[$x][$y]->getScenicScore();
+        }
 
         return $checks > 0;
+    }
+
+    public function getMaxScenicScore(): int
+    {
+        return $this->maxScenicScore;
     }
 
 
