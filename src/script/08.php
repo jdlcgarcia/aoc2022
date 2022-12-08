@@ -6,7 +6,7 @@ use Jdlcgarcia\Aoc2022\common\FileHandler;
 use Jdlcgarcia\Aoc2022\entities\Forest;
 
 $fileHandler = new FileHandler();
-$file = $fileHandler->loadFileContent('test.txt');
+$file = $fileHandler->loadFileContent('08.txt');
 
 $forest = new Forest();
 while (!$file->eof()) {
