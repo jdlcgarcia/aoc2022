@@ -6,6 +6,7 @@ class Tree
 {
     private int $height;
     private bool $visible;
+    private int $scenicScore = 0;
 
     /**
      * @param int $height
@@ -39,5 +40,19 @@ class Tree
         $this->visible = $visible;
     }
 
+    /**
+     * @return int
+     */
+    public function getScenicScore(): int
+    {
+        return $this->scenicScore;
+    }
 
+    /**
+     * @param int $scenicScore
+     */
+    public function setScenicScore(int $scenicScore): void
+    {
+        $this->scenicScore = $scenicScore;
+    }
 }
