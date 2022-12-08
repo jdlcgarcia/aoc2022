@@ -19,3 +19,4 @@ while (!$file->eof()) {
 
 //$forest->print();
 echo $forest->getVisibleTrees() . PHP_EOL;
+echo $forest->getMaxScenicScore() . PHP_EOL;

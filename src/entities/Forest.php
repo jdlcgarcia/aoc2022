@@ -6,7 +6,7 @@ class Forest
 {
     /** @var Tree[][] */
     private array $trees;
-    private const SIZE = 5;
+    private const SIZE = 99;
     private int $maxScenicScore = 0;
 
     public function loadRow(string $trim): void
