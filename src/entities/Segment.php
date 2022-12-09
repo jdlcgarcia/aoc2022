@@ -44,14 +44,14 @@ class Segment
         $this->moveTail();
     }
 
-    private function moveHead(int $getX, int $getY): void
+    public function moveHead(int $getX, int $getY): void
     {
         $this->carryMove = $this->head;
         $newPosition = new Point($getX, $getY);
         $this->head = $newPosition;
     }
 
-    private function moveTail(): void
+    public function moveTail(): void
     {
         if (!$this->adjacentHeadAndTail()) {
             $this->tail = $this->carryMove;
@@ -84,5 +84,61 @@ class Segment
     public function getTailPositions(): array
     {
         return $this->tailPositions;
+    }
+
+    public function print(string $headCharacter, string $tailCharacter): array
+    {
+        $arrayToPrint = [];
+        for($j = 15; $j >= -15; $j--) {
+            for ($i = -15; $i <= 15; $i++) {
+                //$arrayToPrint[$i][$j] = '.';
+                if ($i === 0 && $j === 0) {
+                    $arrayToPrint[$i][$j] = 's';
+                }
+
+                if ($i === $this->tail->getX() && $j === $this->tail->getY()) {
+                    $arrayToPrint[$i][$j] = $tailCharacter;
+                }
+
+                if ($i === $this->head->getX() && $j === $this->head->getY()) {
+                    $arrayToPrint[$i][$j] = $headCharacter;
+                }
+
+            }
+        }
+
+        return $arrayToPrint;
+    }
+
+    /**
+     * @return Point
+     */
+    public function getHead(): Point
+    {
+        return $this->head;
+    }
+
+    /**
+     * @param Point $head
+     */
+    public function setHead(Point $head): void
+    {
+        $this->head = $head;
+    }
+
+    /**
+     * @return Point
+     */
+    public function getTail(): Point
+    {
+        return $this->tail;
+    }
+
+    /**
+     * @param Point $tail
+     */
+    public function setTail(Point $tail): void
+    {
+        $this->tail = $tail;
     }
 }
