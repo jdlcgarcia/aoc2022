@@ -18,4 +18,4 @@ while (!$file->eof()) {
     $file->next();
 }
 
-echo $cpu->run(10);
+echo $cpu->run();
