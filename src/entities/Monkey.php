@@ -15,6 +15,8 @@ class Monkey
     private int $testFalse;
     private $testCounter = 0;
 
+    private GMP $worryLevel;
+
     /**
      * @param int $id
      * @param int[] $items
@@ -42,14 +44,6 @@ class Monkey
     }
 
     /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return GMP[]
      */
     public function getItems(): array
@@ -68,51 +62,11 @@ class Monkey
     }
 
     /**
-     * @return string
-     */
-    public function getOperation(): string
-    {
-        return $this->operation;
-    }
-
-    /**
-     * @param string $operation
-     */
-    public function setOperation(string $operation): void
-    {
-        $this->operation = $operation;
-    }
-
-    /**
-     * @return string
-     */
-    public function getModule(): string
-    {
-        return $this->module;
-    }
-
-    /**
-     * @param string $module
-     */
-    public function setModule(string $module): void
-    {
-        $this->module = $module;
-    }
-
-    /**
      * @return int
      */
     public function getTestTrue(): int
     {
         return $this->testTrue;
-    }
-
-    /**
-     * @param int $testTrue
-     */
-    public function setTestTrue(int $testTrue): void
-    {
-        $this->testTrue = $testTrue;
     }
 
     /**
@@ -123,44 +77,20 @@ class Monkey
         return $this->testFalse;
     }
 
-    /**
-     * @param int $testFalse
-     */
-    public function setTestFalse(int $testFalse): void
-    {
-        $this->testFalse = $testFalse;
-    }
-
-
-    public function debugMonkey(): string
-    {
-        return 'Monkey ' . $this->id . ':' . PHP_EOL .
-            '  Starting items: ' . implode(',', $this->items) . PHP_EOL .
-            '  Operation: ' . $this->operation . PHP_EOL .
-            '  Test: ' . $this->module . PHP_EOL .
-            '    If true: throw to monkey ' . $this->testTrue . PHP_EOL .
-            '    If false: throw to monkey ' . $this->testFalse;
-    }
-
-    public function calculateWorriness(GMP $item): GMP
+    public function calculateWorryLevel(GMP $item): void
     {
         $old = $item;
-        $new = 0;
+        $new = gmp_init(0);
         eval($this->operation.';');
 
-        return $new;
-    }
-
-    public function calculateBoredom(GMP $item): GMP
-    {
-        return $this->calculateWorriness($item);
+        $this->worryLevel = $new;
     }
 
     public function test(GMP $item)
     {
         $this->testCounter++;
 
-        return gmp_mod($this->calculateBoredom($item), $this->module) == 0;
+        return gmp_mod($this->getWorryLevel(), $this->module) == 0;
     }
 
     public function removeItem(int $key): void
@@ -179,5 +109,13 @@ class Monkey
     public function getTestCounter(): int
     {
         return $this->testCounter;
+    }
+
+    /**
+     * @return GMP
+     */
+    public function getWorryLevel(): GMP
+    {
+        return $this->worryLevel;
     }
 }

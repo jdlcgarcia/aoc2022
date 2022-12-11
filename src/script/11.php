@@ -31,18 +31,20 @@ function executeRound(array $monkeys): void
 {
     foreach ($monkeys as $monkey) {
         foreach ($monkey->getItems() as $key => $item) {
+            $monkey->calculateWorryLevel($item);
             if ($monkey->test($item)) {
                 $targetMonkey = $monkey->getTestTrue();
             } else {
                 $targetMonkey = $monkey->getTestFalse();
             }
             $monkey->removeItem($key);
-            $monkeys[$targetMonkey]->addItem($monkey->calculateBoredom($item));
+            $monkeys[$targetMonkey]->addItem($monkey->getWorryLevel());
         }
     }
 }
 
-for ($i = 0; $i < 20; $i++) {
+for ($i = 0; $i < 1000; $i++) {
+    echo "======= ROUND $i =======".PHP_EOL;
     executeRound($testMonkeys);
 }
 
