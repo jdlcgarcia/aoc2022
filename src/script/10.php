@@ -18,4 +18,5 @@ while (!$file->eof()) {
     $file->next();
 }
 
-echo $cpu->run();
+echo $cpu->run() . PHP_EOL;
+$cpu->printScreen();
