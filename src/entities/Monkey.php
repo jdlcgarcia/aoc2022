@@ -10,6 +10,8 @@ class Monkey
     /** @var GMP[] $items */
     private array $items;
     private string $operation;
+
+    private string $operand;
     private string $module;
     private int $testTrue;
     private int $testFalse;
@@ -25,11 +27,12 @@ class Monkey
      * @param int $testTrue
      * @param int $testFalse
      */
-    public function __construct(int $id, array $items, string $operation, int $module, int $testTrue, int $testFalse)
+    public function __construct(int $id, array $items, string $operation, string $operand, int $module, int $testTrue, int $testFalse)
     {
         $this->id = $id;
         $this->setItems($items);
         $this->operation = $operation;
+        $this->operand = $operand;
         $this->module = $module;
         $this->testTrue = $testTrue;
         $this->testFalse = $testFalse;
@@ -56,7 +59,7 @@ class Monkey
      */
     public function setItems(array $items): void
     {
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $this->items[] = gmp_init($item);
         }
     }
@@ -77,20 +80,26 @@ class Monkey
         return $this->testFalse;
     }
 
-    public function calculateWorryLevel(GMP $item): void
-    {
-        $old = $item;
-        $new = gmp_init(0);
-        eval($this->operation.';');
-
-        $this->worryLevel = $new;
-    }
-
-    public function test(GMP $item)
+    public function test(GMP $item, GMP $superModulo)
     {
         $this->testCounter++;
 
-        return gmp_mod($this->getWorryLevel(), $this->module) == 0;
+        $firstOperandToReduceModule = gmp_mod($item, $this->module);
+        $firstOperand = $item;
+        $secondOperandToReduceModule = $firstOperandToReduceModule;
+        $secondOperand = $item;
+        if ($this->operand !== 'self') {
+            $secondOperand = gmp_init($this->operand);
+            $secondOperandToReduceModule = gmp_mod($this->operand, $this->module);
+        }
+
+        if ($this->operation === '+') {
+            $this->worryLevel = gmp_mod(gmp_add($firstOperand, $secondOperand), $superModulo);
+            return gmp_mod($firstOperandToReduceModule + $secondOperandToReduceModule, $this->module) == 0;
+        } else {
+            $this->worryLevel = gmp_mod(gmp_mul($firstOperand, $secondOperand), $superModulo);
+            return gmp_mod($firstOperandToReduceModule * $secondOperandToReduceModule, $this->module) == 0;
+        }
     }
 
     public function removeItem(int $key): void
