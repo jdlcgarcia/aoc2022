@@ -6,7 +6,7 @@ use Jdlcgarcia\Aoc2022\common\FileHandler;
 use Jdlcgarcia\Aoc2022\entities\CPU;
 
 $fileHandler = new FileHandler();
-$file = $fileHandler->loadFileContent('test.txt');
+$file = $fileHandler->loadFileContent('10.txt');
 
 $cpu = new CPU();
 while (!$file->eof()) {
