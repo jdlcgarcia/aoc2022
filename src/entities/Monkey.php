@@ -160,7 +160,7 @@ class Monkey
     {
         $this->testCounter++;
 
-        return gmp_mod($this->calculateBoredom($item), $this->module) === gmp_init(0);
+        return gmp_mod($this->calculateBoredom($item), $this->module) == 0;
     }
 
     public function removeItem(int $key): void
