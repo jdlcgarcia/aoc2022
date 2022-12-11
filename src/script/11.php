@@ -43,12 +43,12 @@ function executeRound(array $monkeys): void
     }
 }
 
-for ($i = 0; $i < 1000; $i++) {
+for ($i = 0; $i < 10000; $i++) {
     echo "======= ROUND $i =======".PHP_EOL;
-    executeRound($testMonkeys);
+    executeRound($monkeys);
 }
 
-foreach ($testMonkeys as $monkey) {
+foreach ($monkeys as $monkey) {
     echo 'Monkey ' . $monkey->getId() . ' inspected items ' . $monkey->getTestCounter() . ' times. ' . PHP_EOL;
 }
 
