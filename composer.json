@@ -15,5 +15,8 @@
     ],
     "require-dev": {
 
-    }
+    },
+  "require": {
+    "ext-gmp": "*"
+  }
 }

@@ -2,13 +2,15 @@
 
 namespace Jdlcgarcia\Aoc2022\entities;
 
+use GMP;
+
 class Monkey
 {
     private int $id;
-    /** @var int[] $items */
+    /** @var GMP[] $items */
     private array $items;
     private string $operation;
-    private string $test;
+    private string $module;
     private int $testTrue;
     private int $testFalse;
     private $testCounter = 0;
@@ -17,16 +19,16 @@ class Monkey
      * @param int $id
      * @param int[] $items
      * @param string $operation
-     * @param string $test
+     * @param int $module
      * @param int $testTrue
      * @param int $testFalse
      */
-    public function __construct(int $id, array $items, string $operation, string $test, int $testTrue, int $testFalse)
+    public function __construct(int $id, array $items, string $operation, int $module, int $testTrue, int $testFalse)
     {
         $this->id = $id;
-        $this->items = $items;
+        $this->setItems($items);
         $this->operation = $operation;
-        $this->test = $test;
+        $this->module = $module;
         $this->testTrue = $testTrue;
         $this->testFalse = $testFalse;
     }
@@ -48,7 +50,7 @@ class Monkey
     }
 
     /**
-     * @return array
+     * @return GMP[]
      */
     public function getItems(): array
     {
@@ -60,7 +62,9 @@ class Monkey
      */
     public function setItems(array $items): void
     {
-        $this->items = $items;
+        foreach($items as $item) {
+            $this->items[] = gmp_init($item);
+        }
     }
 
     /**
@@ -82,17 +86,17 @@ class Monkey
     /**
      * @return string
      */
-    public function getTest(): string
+    public function getModule(): string
     {
-        return $this->test;
+        return $this->module;
     }
 
     /**
-     * @param string $test
+     * @param string $module
      */
-    public function setTest(string $test): void
+    public function setModule(string $module): void
     {
-        $this->test = $test;
+        $this->module = $module;
     }
 
     /**
@@ -133,12 +137,12 @@ class Monkey
         return 'Monkey ' . $this->id . ':' . PHP_EOL .
             '  Starting items: ' . implode(',', $this->items) . PHP_EOL .
             '  Operation: ' . $this->operation . PHP_EOL .
-            '  Test: ' . $this->test . PHP_EOL .
+            '  Test: ' . $this->module . PHP_EOL .
             '    If true: throw to monkey ' . $this->testTrue . PHP_EOL .
             '    If false: throw to monkey ' . $this->testFalse;
     }
 
-    public function calculateWorriness(int $item): int
+    public function calculateWorriness(GMP $item): GMP
     {
         $old = $item;
         $new = 0;
@@ -147,18 +151,16 @@ class Monkey
         return $new;
     }
 
-    public function calculateBoredom(int $item): int
+    public function calculateBoredom(GMP $item): GMP
     {
-        return floor($this->calculateWorriness($item) / 3);
+        return $this->calculateWorriness($item);
     }
 
-    public function test(int $item)
+    public function test(GMP $item)
     {
         $this->testCounter++;
-        $boredom = $this->calculateBoredom($item);
-        eval('$result = $boredom '.$this->getTest().' === 0;');
 
-        return $result;
+        return gmp_mod($this->calculateBoredom($item), $this->module) === gmp_init(0);
     }
 
     public function removeItem(int $key): void
@@ -166,7 +168,7 @@ class Monkey
         unset($this->items[$key]);
     }
 
-    public function addItem(int $item)
+    public function addItem(GMP $item)
     {
         $this->items[] = $item;
     }
