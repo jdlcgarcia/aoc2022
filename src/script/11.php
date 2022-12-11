@@ -12,7 +12,7 @@ $testMonkeys = [
 ];
 
 $monkeys = [
-    new Monkey(0, [57], '$new = $old * 13', '% 11', 2, 2),
+    new Monkey(0, [57], '$new = $old * 13', '% 11', 3, 2),
     new Monkey(1, [58, 93, 88, 81, 72, 73, 65], '$new = $old + 2', '% 7', 6, 7),
     new Monkey(2, [65, 95], '$new = $old + 6', '% 13', 3, 5),
     new Monkey(3, [58, 80, 81, 83], '$new = $old * $old', '% 5', 4, 5),
@@ -39,10 +39,6 @@ function executeRound(array $monkeys): void
             $monkeys[$targetMonkey]->addItem($monkey->calculateBoredom($item));
         }
     }
-
-    foreach ($monkeys as $monkey) {
-        echo 'Monkey ' . $monkey->getId() . ': ' . implode(', ', $monkey->getItems()) . PHP_EOL;
-    }
 }
 
 for ($i = 0; $i < 20; $i++) {
@@ -52,3 +48,5 @@ for ($i = 0; $i < 20; $i++) {
 foreach ($monkeys as $monkey) {
     echo 'Monkey ' . $monkey->getId() . ' inspected items ' . $monkey->getTestCounter() . ' times. ' . PHP_EOL;
 }
+
+echo 350 * 347 . PHP_EOL;
