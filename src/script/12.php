@@ -7,7 +7,7 @@ use Jdlcgarcia\Aoc2022\common\FileHandler;
 use Jdlcgarcia\Aoc2022\common\Graph;
 
 $fileHandler = new FileHandler();
-$file = $fileHandler->loadFileContent('test.txt');
+$file = $fileHandler->loadFileContent('12.txt');
 
 $matrix = [];
 
@@ -22,4 +22,6 @@ while (!$file->eof()) {
 $graph = new Graph($matrix);
 $bfs = new BreadthFirstSearch($graph);
 $bfs->execute();
-var_dump($bfs->getSteps()[$graph->getStartNode()]);
+$stepCounter = $bfs->getSteps();
+echo $stepCounter[$graph->getStartNode()]. PHP_EOL;
+echo reset($stepCounter);

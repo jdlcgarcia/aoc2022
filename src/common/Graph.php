@@ -10,6 +10,8 @@ class Graph
     private ?string $startNode = null;
     private ?string $endNode = null;
 
+    private array $possibleStartingPoints = [];
+
     public function __construct(array $matrix)
     {
         $this->matrix = $matrix;
@@ -45,6 +47,7 @@ class Graph
         if ($value === 'S') {
             if (!$this->startNode) {
                 $this->startNode = json_encode([$i, $j]);
+                $this->possibleStartingPoints[$this->startNode] = 1;
             }
 
             return 'a';
@@ -54,6 +57,8 @@ class Graph
             }
 
             return 'z';
+        } elseif ($value === 'a') {
+            $this->possibleStartingPoints[json_encode([$i, $j])] = 1;
         }
 
         return $value;
@@ -83,5 +88,13 @@ class Graph
     public function getStartNode(): ?string
     {
         return $this->startNode;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPossibleStartingPoints(): array
+    {
+        return $this->possibleStartingPoints;
     }
 }

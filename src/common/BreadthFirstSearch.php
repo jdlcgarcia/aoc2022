@@ -19,8 +19,10 @@ class BreadthFirstSearch
 
     public function execute(): void
     {
-        if ($shortestPath = $this->searchShortestPath($this->graph->getStartNode())) {
-            $this->steps[$this->graph->getStartNode()] = count($shortestPath) - 1;
+        foreach ($this->graph->getPossibleStartingPoints() as $k => $a) {
+            if ($shortestPath = $this->searchShortestPath($k)) {
+                $this->steps[$k] = count($shortestPath) - 1;
+            }
         }
 
         asort($this->steps);
